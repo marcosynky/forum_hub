@@ -29,7 +29,7 @@ public class TopicoService {
     @Transactional // Garante que as operações de banco de dados sejam feitas em uma transação
     public Topico criarTopico(Topico topico) {
         // Verifica se já existe um tópico com o mesmo título e mensagem
-        Optional<Topico> topicoExistente = topicoRepository.findByTituloAndMensagem(topico.getTitulo(), topico.getMensagem());
+        Optional<Topico> topicoExistente = topicoRepository.findByTituloAndMensagem(topico.getTitulo(), topico.getDescricao());
         if (topicoExistente.isPresent()) { // Se já existir um tópico com esses dados, lança uma exceção
             throw new RuntimeException("Tópico já existente com o mesmo título e mensagem.");
         }
@@ -55,5 +55,9 @@ public class TopicoService {
             throw new RuntimeException("Tópico não encontrado.");
         }
         topicoRepository.delete(topicoExistente.get()); // Se existir, deleta o tópico
+    }
+
+    public Optional<Topico> buscarTopicoPorTituloEMensagem(String tituloExemplo, String mensagemExemplo) {
+        return topicoRepository.findByTituloAndMensagem(tituloExemplo, mensagemExemplo);
     }
 }

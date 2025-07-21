@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malpha_Fórum</title>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<header>
+    <h1>Malpha_Fórum</h1>
+    <p>Bem-vindo ao Malpha_Fórum! Aqui você pode criar e interagir em tópicos.</p>
+</header>
+
+<div class="content">
+
+    <!-- Formulário para criar novo tópico -->
+    <div class="form-section">
+        <h2>Criar Novo Tópico</h2>
+        <form action="/forum/createTopic" method="POST">
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" required>
+            <br><br>
+            <label for="description">Descrição:</label>
+            <textarea id="description" name="description" required></textarea>
+            <br><br>
+            <button type="submit">Criar Tópico</button>
+        </form>
+    </div>
+
+    <!-- Exibindo tópicos -->
+    <div class="topics-section">
+        <h2>Tópicos Recentes</h2>
+        <div id="topics">
+            <ul>
+                <th:block th:each="topic : ${topics}">
+                    <li>
+                        <h3 th:text="${topic.titulo}"></h3>
+                        <p th:text="${topic.descricao}"></p>
+                        <small>Postado por: <span th:text="${topic.user.name}"></span></small>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

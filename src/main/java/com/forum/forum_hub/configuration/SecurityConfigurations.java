@@ -22,13 +22,16 @@ public class SecurityConfigurations {
     // Não é mais necessário o método securityFilterChain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-        http.authorizeRequests()
+        http
+                .authorizeHttpRequests()
                 .requestMatchers("/login/**", "/register/**").permitAll()
                 .requestMatchers("/topicos/**", "/usuarios/**").authenticated()
                 .requestMatchers("/actuator/**").permitAll()
                 .and()
-                .formLogin().disable();
+                .formLogin()
+                .loginPage("/login")
+                .and()
+                .csrf().disable();
 
 
         return http.build();

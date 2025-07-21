@@ -1,0 +1,26 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Criar Tópico</title>
+</head>
+<body>
+
+<h1>Criar um novo tópico</h1>
+
+<form action="/forum/createTopic" method="POST">
+    <label for="topicName">Título:</label>
+    <input type="text" id="topicName" name="topicName" required>
+    <br><br>
+    <label for="description">Descrição:</label>
+    <textarea id="description" name="description" required></textarea>
+    <br><br>
+    <button type="submit">Criar Tópico</button>
+</form>
+
+
+
+
+</body>
+</html>
