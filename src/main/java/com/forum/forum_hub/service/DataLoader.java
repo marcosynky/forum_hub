@@ -29,3 +29,4 @@ public class DataLoader implements CommandLineRunner {
         usuarioRepository.save(usuario);
     }
 }
+
