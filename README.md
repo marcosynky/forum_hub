@@ -1,7 +1,7 @@
 # Forum_hub - API de Fórum
 
 ## 📖 Sobre
-forum_hub é uma API backend desenvolvida com **Spring Boot** para gerenciar tópicos, usuários e respostas em um fórum online. O projeto oferece endpoints para criar, atualizar, visualizar e excluir tópicos, além de integrar com um banco de dados **MySQL** para persistência dos dados. Desenvolvido por **Marco Antônio**, com o objetivo de fornecer uma plataforma simples e eficiente para interação de usuários.
+Forum_hub é uma API backend desenvolvida com **Spring Boot** para gerenciar tópicos, usuários e respostas em um fórum online. O projeto oferece endpoints para criar, atualizar, visualizar e excluir tópicos, além de integrar com um banco de dados **MySQL** para persistência dos dados. Desenvolvido por **Marco Antônio**, com o objetivo de fornecer uma plataforma simples e eficiente para interação de usuários.
 
 ## 🚀 Tecnologias
 
