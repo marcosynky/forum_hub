@@ -5,6 +5,7 @@ import com.forum.forum_hub.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,6 +27,8 @@ public class SecurityConfigurations {
         http
                 .authorizeRequests()
                 .requestMatchers("/auth/login", "/auth/register", "/topics/create").permitAll()  // Libera login e registro sem autenticação
+                .requestMatchers(HttpMethod.PUT, "/topics/**").permitAll()  // Permite PUT
+                .requestMatchers(HttpMethod.DELETE, "/topics/**").permitAll()  // Permite DELETE
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();

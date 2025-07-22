@@ -1,26 +1,46 @@
 package com.forum.forum_hub.service;
 
-import com.forum.forum_hub.TopicoRepository; // Importa a interface TopicoRepository
-import com.forum.forum_hub.models.Topico; // Importa o modelo de dados Topico
-import org.springframework.beans.factory.annotation.Autowired; // Importa o Anotação Autowired
-import org.springframework.stereotype.Service; // Importa o Anotação Service
+import com.forum.forum_hub.TopicoRepository;
+import com.forum.forum_hub.models.Topico;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-// Declara a classe TopicoService
 @Service
 public class TopicoService {
 
     @Autowired
-    private TopicoRepository topicRepository; // Declara o atributo topicRepository
+    private TopicoRepository topicoRepository;
 
-    public Topico createTopic(String title, String description) {
-        // Cria um novo tópico
-        Topico topic = new Topico();
+    // Método para criar um novo tópico
+    public Topico createTopic(String titulo, String description) {
+        Topico topico = new Topico();
+        topico.setTitulo(titulo);
+        topico.setDescription(description);
+        return topicoRepository.save(topico);
+    }
 
-        // Define o título e a descrição do tópico
-        topic.setTitulo(title);
-        topic.setDescription(description);
+    // Método para atualizar um tópico
+    public Topico updateTopic(Long id, String titulo, String description) {
+        Optional<Topico> topicoOpt = topicoRepository.findById(id);
+        if (topicoOpt.isPresent()) {
+            Topico topico = topicoOpt.get();
+            topico.setTitulo(titulo);
+            topico.setDescription(description);
+            return topicoRepository.save(topico);
+        } else {
+            throw new RuntimeException("Tópico não encontrado com o ID: " + id);
+        }
+    }
 
-        // Salva o tópico no banco de dados
-        return topicRepository.save(topic); // Retorna o tópico salvo
+    // Método para deletar um tópico
+    public String deleteTopic(Long id) {
+        Optional<Topico> topicoOpt = topicoRepository.findById(id);
+        if (topicoOpt.isPresent()) {
+            topicoRepository.deleteById(id);
+            return "Tópico deletado com sucesso!";
+        } else {
+            throw new RuntimeException("Tópico não encontrado com o ID: " + id);
+        }
     }
 }
