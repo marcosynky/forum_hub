@@ -25,14 +25,18 @@ public class TopicoService {
         return topicoRepository.findById(id); // Retorna um Optional com o tópico encontrado pelo ID
     }
 
+    // Método para verificar a existência de um tópico
+    private void verificarTopicoExistente(String titulo, String descricao) {
+        Optional<Topico> topicoExistente = topicoRepository.findByTituloAndMensagem(titulo, descricao);
+        if (topicoExistente.isPresent()) {
+            throw new RuntimeException("Tópico já existente com o mesmo título e mensagem.");
+        }
+    }
+
     // Método para criar um novo tópico
     @Transactional // Garante que as operações de banco de dados sejam feitas em uma transação
     public Topico criarTopico(Topico topico) {
-        // Verifica se já existe um tópico com o mesmo título e mensagem
-        Optional<Topico> topicoExistente = topicoRepository.findByTituloAndMensagem(topico.getTitulo(), topico.getDescricao());
-        if (topicoExistente.isPresent()) { // Se já existir um tópico com esses dados, lança uma exceção
-            throw new RuntimeException("Tópico já existente com o mesmo título e mensagem.");
-        }
+        verificarTopicoExistente(topico.getTitulo(), topico.getDescricao()); // Verifica se o tópico já existe
         return topicoRepository.save(topico); // Caso contrário, salva o novo tópico no banco de dados
     }
 

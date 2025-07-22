@@ -1,45 +1,61 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<!-- Definição do tipo de documento HTML5, com o idioma da página sendo Português do Brasil (pt-BR) e a inclusão do namespace do Thymeleaf -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malpha_Fórum</title>
-    <!-- Link para o arquivo CSS externo -->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8, garantindo que caracteres especiais sejam exibidos corretamente -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configurações para garantir que a página seja responsiva em dispositivos móveis -->
+    <title>Malpha_Fórum</title> <!-- Título da página, exibido na aba do navegador -->
+
+    <!-- Link para o arquivo CSS que vai estilizar a página -->
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
 <body>
 
-<!-- Cabeçalho -->
+<!-- Cabeçalho da página -->
 <header>
-    <h1>Malpha_Fórum</h1>
-    <p>Bem-vindo ao Malpha_Fórum! Aqui você pode criar e interagir em tópicos.</p>
+    <h1>Malpha_Fórum</h1> <!-- Título principal da página, exibe o nome do fórum -->
+    <p>Bem-vindo ao Malpha_Fórum! Aqui você pode criar e interagir em tópicos.</p> <!-- Descrição do fórum -->
 </header>
 
+<!-- Área de conteúdo principal da página -->
 <div class="content">
 
-    <!-- Formulário para criar novo tópico -->
+    <!-- Seção para criar um novo tópico -->
     <div class="form-section">
-        <h2>Criar Novo Tópico</h2>
+        <h2>Criar Novo Tópico</h2> <!-- Título da seção de criação de tópico -->
+
+        <!-- Formulário para criar um novo tópico, com método POST -->
         <form action="/forum/createTopic" method="POST">
-            <label for="title">Título:</label>
-            <input type="text" id="title" name="title" required>
+            <label for="title">Título:</label> <!-- Label para o campo de título -->
+            <input type="text" id="title" name="title" required> <!-- Campo de entrada para o título do tópico -->
             <br><br>
-            <label for="description">Descrição:</label>
-            <textarea id="description" name="description" required></textarea>
+
+            <label for="description">Descrição:</label> <!-- Label para o campo de descrição -->
+            <textarea id="description" name="description" required></textarea> <!-- Campo de texto para a descrição do tópico -->
             <br><br>
-            <button type="submit">Criar Tópico</button>
+
+            <button type="submit">Criar Tópico</button> <!-- Botão para submeter o formulário e criar o tópico -->
         </form>
     </div>
 
-    <!-- Exibindo tópicos -->
+    <!-- Seção para exibir os tópicos recentes -->
     <div class="topics-section">
-        <h2>Tópicos Recentes</h2>
+        <h2>Tópicos Recentes</h2> <!-- Título da seção de tópicos recentes -->
+
+        <!-- Contêiner onde os tópicos serão listados -->
         <div id="topics">
             <ul>
+                <!-- Expressão Thymeleaf para iterar sobre os tópicos -->
                 <th:block th:each="topic : ${topics}">
                     <li>
+                        <!-- Exibe o título de cada tópico -->
                         <h3 th:text="${topic.titulo}"></h3>
+
+                        <!-- Exibe a descrição do tópico -->
                         <p th:text="${topic.descricao}"></p>
+
+                        <!-- Exibe o nome do usuário que postou o tópico -->
                         <small>Postado por: <span th:text="${topic.user.name}"></span></small>
                     </li>
                 </th:block>

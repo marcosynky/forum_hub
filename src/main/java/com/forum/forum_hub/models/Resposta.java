@@ -1,35 +1,41 @@
-package com.forum.forum_hub.models; // Declara o pacote onde a classe está localizada
+package com.forum.forum_hub.models;
 
-import jakarta.persistence.*; // Importa as anotações do JPA para mapeamento da entidade com o banco de dados
-import lombok.AllArgsConstructor; // Importa a anotação do Lombok para gerar um construtor com todos os parâmetros
-import lombok.Getter; // Importa a anotação do Lombok para gerar o getter de todos os campos
-import lombok.NoArgsConstructor; // Importa a anotação do Lombok para gerar um construtor sem parâmetros
-import lombok.Setter; // Importa a anotação do Lombok para gerar o setter de todos os campos
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
-import java.time.LocalDateTime; // Importa a classe LocalDateTime para manipulação de datas e horas
-
-// A anotação @Entity marca a classe como uma entidade JPA, que será mapeada para uma tabela no banco de dados
 @Entity
-@Getter // Gera os métodos getter para todos os campos da classe
-@Setter // Gera os métodos setter para todos os campos da classe
-@NoArgsConstructor // Gera um construtor sem parâmetros
-@AllArgsConstructor // Gera um construtor com todos os parâmetros
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Resposta {
 
-    @Id // Marca o campo 'id' como chave primária da entidade
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // A chave primária será gerada automaticamente pelo banco com auto-incremento
-    private Long id; // Identificador único da resposta, do tipo Long
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String mensagem; // A mensagem da resposta, do tipo String
+    @NotNull(message = "A mensagem não pode ser nula")
+    private String mensagem;
 
-    // Relacionamento muitos-para-um (muitas respostas podem pertencer a um tópico)
-    @ManyToOne // Indica que muitas respostas podem estar associadas a um único tópico
-    @JoinColumn(name = "topico_id") // Especifica o nome da coluna de junção no banco de dados que mapeia a relação
-    private Topico topico; // Relacionamento com a entidade Topico, indicando a qual tópico a resposta pertence
+    // Relacionamento muitos-para-um com Topico
+    @ManyToOne
+    @JoinColumn(name = "topico_id")
+    private Topico topico;
 
-    private LocalDateTime dataCriacao = LocalDateTime.now(); // A data e hora de criação da resposta, com valor padrão de agora
+    private LocalDateTime dataCriacao = LocalDateTime.now();  // Data de criação com valor padrão
 
-    private String autor; // O autor da resposta, do tipo String (nome ou identificador do autor)
+    @NotNull(message = "O autor não pode ser nulo")
+    private String autor;
 
-    private boolean solucao; // Indica se a resposta é a solução para o tópico (booleano)
+    private boolean solucao;  // Indica se a resposta é a solução para o tópico
+
+    // Método para alterar a data de criação (caso necessário)
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao != null ? dataCriacao : LocalDateTime.now();
+    }
 }

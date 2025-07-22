@@ -3,24 +3,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Criar Tópico</title>
+    <title>Criar Tópico</title>  <!-- Define o título da página que aparece na aba do navegador -->
 </head>
 <body>
 
-<h1>Criar um novo tópico</h1>
+<h1>Criar um novo tópico</h1>  <!-- Título principal da página, indicando a ação que o usuário pode realizar -->
 
+<!-- Formulário que será enviado via POST para a URL "/forum/createTopic" -->
 <form action="/forum/createTopic" method="POST">
-    <label for="topicName">Título:</label>
-    <input type="text" id="topicName" name="topicName" required>
+    <!-- Campo para o título do tópico -->
+    <label for="topicName">Título:</label> <!-- A etiqueta associada ao campo de input -->
+    <input type="text" id="topicName" name="topicName" required> <!-- Campo de entrada de texto, obrigatório -->
     <br><br>
-    <label for="description">Descrição:</label>
-    <textarea id="description" name="description" required></textarea>
+
+    <!-- Campo para a descrição do tópico -->
+    <label for="description">Descrição:</label> <!-- A etiqueta associada ao campo de textarea -->
+    <textarea id="description" name="description" required></textarea> <!-- Campo de texto para descrição, obrigatório -->
     <br><br>
-    <button type="submit">Criar Tópico</button>
+
+    <!-- Botão para enviar o formulário -->
+    <button type="submit">Criar Tópico</button> <!-- Ao clicar, o formulário será enviado -->
 </form>
-
-
-
 
 </body>
 </html>

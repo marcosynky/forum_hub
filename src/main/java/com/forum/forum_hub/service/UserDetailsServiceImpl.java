@@ -1,32 +1,34 @@
 package com.forum.forum_hub.service;
 
-
-
-import com.forum.forum_hub.UsuarioRepository;
-import com.forum.forum_hub.models.Usuario; // Importa o modelo de usuário
-import org.springframework.beans.factory.annotation.Autowired; // Importa a anotação @Autowired
-import org.springframework.security.core.userdetails.UserDetails; // Interface do Spring Security para os detalhes do usuário
+import com.forum.forum_hub.UserRepository;
+import com.forum.forum_hub.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException; // Exceção quando o usuário não é encontrado
-import org.springframework.stereotype.Service; // Marca a classe como um serviço
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
-
+import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository usuarioRepository;  // Seu repositório de usuários
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(username)
-                .orElseThrow( () -> new UsernameNotFoundException("Usuário nao encontrado") );
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // Busca o usuário pelo email
+        User user = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(usuario.getNome())
-                .password(usuario.getSenha())
-                .roles("USER")
-                .build();
+        // Defina as permissões do usuário, atribuindo ao usuário o papel de 'ROLE_USER' por padrão
+        // Você pode alterar essa parte de acordo com a estrutura de roles que você tenha
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getSenha(),
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")) // Adiciona o papel ao usuário
+        );
     }
 }

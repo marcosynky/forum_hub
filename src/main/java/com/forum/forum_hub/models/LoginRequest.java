@@ -1,23 +1,17 @@
 package com.forum.forum_hub.models;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+
+// Usando Lombok para gerar os métodos Getter, Setter, toString, equals e hashCode
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class LoginRequest {
-    private String email;
-    private String senha;
 
-    // Getters e Setters
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+    private String email;  // Atributo que armazena o email do usuário
+    private String senha;  // Atributo que armazena a senha do usuário
 }

@@ -1,28 +1,53 @@
-package com.forum.forum_hub.models; // Declara o pacote onde a classe está localizada
+package com.forum.forum_hub.models;
 
-import jakarta.persistence.*; // Importa as anotações do JPA para o mapeamento da entidade com o banco de dados
-import lombok.AllArgsConstructor; // Importa a anotação do Lombok para gerar um construtor com todos os parâmetros
-import lombok.Getter; // Importa a anotação do Lombok para gerar o getter de todos os campos
-import lombok.NoArgsConstructor; // Importa a anotação do Lombok para gerar um construtor sem parâmetros
-import lombok.Setter; // Importa a anotação do Lombok para gerar o setter de todos os campos
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 
-import java.util.List; // Importa a lista que será usada para armazenar os usuários relacionados ao perfil
+import java.util.List;
 
-// A anotação @Entity marca a classe como uma entidade JPA, que será mapeada para uma tabela no banco de dados
 @Entity
-@Getter // Gera os métodos getter para todos os campos da classe
-@Setter // Gera os métodos setter para todos os campos da classe
-@NoArgsConstructor // Gera um construtor sem parâmetros
-@AllArgsConstructor // Gera um construtor com todos os parâmetros
 public class Perfil {
 
-    @Id // Marca o campo 'id' como chave primária da entidade
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // A chave primária será gerada automaticamente pelo banco, com auto-incremento
-    private Long id; // Identificador único do perfil, do tipo Long
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Geração automática do ID
+    private Long id;
 
-    private String nome; // Nome do perfil, do tipo String
+    @ManyToMany
+    @JoinTable(
+            name = "perfil_usuario",  // Nome da tabela de junção
+            joinColumns = @JoinColumn(name = "perfil_id"),  // Coluna de chave estrangeira para Perfil
+            inverseJoinColumns = @JoinColumn(name = "usuario_id")  // Coluna de chave estrangeira para User
+    )
+    private List<User> usuarios;
 
-    // Relacionamento muitos-para-muitos (muitos perfis podem ser associados a muitos usuários)
-    @ManyToMany(mappedBy = "perfis") // Define o relacionamento muitos-para-muitos, onde 'perfis' é o atributo na classe 'Usuario' que mapeia para esta entidade
-    private List<Usuario> usuarios; // Lista de usuários associados a esse perfil
+    // Construtor padrão
+    public Perfil() {}
+
+    // Construtor com parâmetros
+    public Perfil(Long id, List<User> usuarios) {
+        this.id = id;
+        this.usuarios = usuarios;
+    }
+
+    // Métodos getters e setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<User> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<User> usuarios) {
+        this.usuarios = usuarios;
+    }
 }

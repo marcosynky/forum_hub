@@ -1,54 +1,54 @@
 package com.forum.forum_hub.configuration;
 
+
+import com.forum.forum_hub.service.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
+@EnableWebSecurity
 public class SecurityConfigurations {
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;  // Injetando o UserDetailsService
 
-    public SecurityConfigurations(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
-    // Não é mais necessário o método securityFilterChain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // Configuração do filtro de segurança
         http
-                .authorizeHttpRequests()
-                .requestMatchers("/login/**", "/register/**").permitAll()
-                .requestMatchers("/topicos/**", "/usuarios/**").authenticated()
-                .requestMatchers("/actuator/**").permitAll()
+                .authorizeRequests()
+                .requestMatchers("/auth/login", "/auth/register").permitAll()  // Permite acesso às rotas de login e registro sem autenticação
+                .anyRequest().authenticated()  // Requer autenticação para outras rotas
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .and()
-                .csrf().disable();
+                .csrf().disable();  // Desabilita o CSRF (Cross-Site Request Forgery)
 
-
-        return http.build();
+        return http.build();  // Retorna a configuração de segurança
     }
 
-    // Mantemos o AuthenticationManager configurado corretamente
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
+        // Configuração do AuthenticationManager para autenticação
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        // Configurando o UserDetailsService no AuthenticationManagerBuilder
         authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
+                .passwordEncoder(passwordEncoder());  // Configura o PasswordEncoder para autenticação
+
+        return authenticationManagerBuilder.build();  // Retorna o AuthenticationManager configurado
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // Configura o PasswordEncoder (para criptografar e verificar senhas)
         return new BCryptPasswordEncoder();
     }
 }
