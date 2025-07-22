@@ -23,15 +23,15 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Email para testar
-        String email = "marcosynky@gmail.com";
+        String email = "7W6m1@example.com";
 
         // Verifica se o usuário já existe no banco de dados
         if (!userRepository.existsByEmail(email)) {
             // Se o usuário não existir, cria um novo usuário
             User usuario = new User();
             usuario.setEmail(email);
-            usuario.setNome("Marcos");  // Nome do usuário
-            usuario.setSenha(passwordEncoder.encode("samuel1978")); // Criptografando a senha
+            usuario.setNome("Teste");  // Nome do usuário
+            usuario.setSenha(passwordEncoder.encode("senhaDeTeste123")); // Definindo uma senha válida
 
             // Salva o novo usuário no banco de dados
             userRepository.save(usuario);

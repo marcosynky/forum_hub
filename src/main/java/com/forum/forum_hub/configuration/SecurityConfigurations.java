@@ -19,36 +19,30 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfigurations {
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;  // Injetando o UserDetailsService
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Configuração do filtro de segurança
         http
                 .authorizeRequests()
-                .requestMatchers("/auth/login", "/auth/register").permitAll()  // Permite acesso às rotas de login e registro sem autenticação
-                .anyRequest().authenticated()  // Requer autenticação para outras rotas
+                .requestMatchers("/auth/login", "/auth/register").permitAll()  // Libera login e registro sem autenticação
+                .anyRequest().authenticated()
                 .and()
-                .csrf().disable();  // Desabilita o CSRF (Cross-Site Request Forgery)
-
-        return http.build();  // Retorna a configuração de segurança
+                .csrf().disable();
+        return http.build();  // Ajuste o método `http.build()` para compatibilidade com a versão do Spring Boot
     }
 
+    // Configura o gerenciador de autenticação
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        // Configuração do AuthenticationManager para autenticação
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        // Configurando o UserDetailsService no AuthenticationManagerBuilder
-        authenticationManagerBuilder.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());  // Configura o PasswordEncoder para autenticação
-
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception { // O gerenciador de autenticação
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class); // Obtenha o gerenciador de autenticação compartilhado
+        authenticationManagerBuilder.userDetailsService(userDetailsService) // Define o UserDetailsService
+                .passwordEncoder(passwordEncoder()); // Define o PasswordEncoder
         return authenticationManagerBuilder.build();  // Retorna o AuthenticationManager configurado
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Configura o PasswordEncoder (para criptografar e verificar senhas)
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();  // Usando o BCryptPasswordEncoder para criptografar as senhas
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,33 +21,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;  // Para autenticar o usuário com as credenciais
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;  // Para gerar o JWT após autenticação bem-sucedida
+    private JwtTokenProvider jwtTokenProvider;  // Caso utilize JWT
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;  // Para codificar as senhas (se necessário)
-
+    // Endpoint de login
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) { // Alterado para receber LoginRequest
         try {
-            // Aqui usamos o AuthenticationManager para autenticar o usuário com o e-mail e senha fornecidos
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha())
+            Authentication authentication = authenticationManager.authenticate( // Autenticação
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getSenha()) // Autenticação
             );
 
-            // Se a autenticação for bem-sucedida, a autenticação é registrada no contexto de segurança
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication); // Autenticação
 
-            // Gera o token JWT para o usuário autenticado
+            // Geração do token JWT após autenticação
             String token = jwtTokenProvider.generateToken(authentication);
 
-            // Retorna o token no corpo da resposta
-            return ResponseEntity.ok(new JwtResponse(token));
-        } catch (BadCredentialsException e) {
-            // Caso as credenciais sejam inválidas, retorna o erro 401 (Unauthorized)
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+            return ResponseEntity.ok(new JwtResponse(token)); // Retorna o token JWT
+        } catch (BadCredentialsException e) { // Caso as credenciais sejam inválidas
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas"); // Retorna erro 401
         }
     }
 }
