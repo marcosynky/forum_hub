@@ -30,13 +30,15 @@ public class ForumController {
     @PostMapping("/forum/createTopic")
     public String createTopic(@RequestParam String title, @RequestParam String message, Model model) {
         // Criar um novo tópico
-        Topico newTopic = new Topico();
-        newTopic.setTitulo(title); // Define o título do tópico
-        newTopic.setMensagem(message); // Define a mensagem do tópico
+        Topico novoTopico = new Topico();
+        novoTopico.setTitulo("Título do Tópico");
+        novoTopico.setDescription("Descrição do Tópico");
+        novoTopico.setMensagem("Mensagem do Tópico");
+
 
 
         // Salvar o novo tópico no banco de dados
-        topicoRepository.save(newTopic);
+        topicoRepository.save(novoTopico);
 
         // Redireciona de volta para a página de tópicos
         return "redirect:/forum";

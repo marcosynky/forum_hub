@@ -1,36 +1,54 @@
-package com.forum.forum_hub.models; // Declara o pacote onde a classe está localizada
+package com.forum.forum_hub.models;
 
+import jakarta.persistence.*;
 
+@Entity // Indica que essa classe representa uma tabela no banco de dados
+@Table(name = "topico")// Define o nome da tabela
+public class Topico { // Declara a classe Topico
+    @Id // Define a chave primária
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// Define a estratégia de geração da chave primária
+    private Long id; // Declara o atributo id
 
-import jakarta.persistence.Entity; // Anotação para mapear a classe para uma tabela no banco de dados
-import jakarta.persistence.GeneratedValue; // Geração automática do valor da chave primária
-import jakarta.persistence.GenerationType; // Estratégias para a geração da chave primária
-import jakarta.persistence.Id; // Define a chave primária da entidade
-import jakarta.validation.constraints.NotNull; // Importa a anotação para validação de campos obrigatórios
-import lombok.Getter; // Lombok para gerar automaticamente os métodos getter
-import lombok.Setter; // Lombok para gerar automaticamente os métodos setter
-import lombok.AllArgsConstructor; // Lombok para gerar o construtor com todos os parâmetros
-import lombok.NoArgsConstructor; // Lombok para gerar o construtor sem parâmetros
+    @Column(name = "titulo", nullable = false) // Define o nome da coluna
+    private String titulo;// Declara o atributo titulo
 
-@Entity // Marca a classe como uma entidade JPA, que será mapeada para uma tabela no banco de dados
-@Getter // Lombok: gera automaticamente os getters para todos os campos
-@Setter // Lombok: gera automaticamente os setters para todos os campos
-@NoArgsConstructor // Lombok: gera o construtor sem parâmetros (necessário para JPA)
-@AllArgsConstructor // Lombok: gera o construtor com todos os parâmetros
-public class Topico {
+    @Column(name = "description") // Define o nome da coluna
+    private String description; // Declara o atributo description
 
-    @Id // Define o campo 'id' como chave primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // A chave primária será gerada automaticamente, com incremento
-    private Long id; // Identificador único do tópico, do tipo Long
+    @Column(name = "mensagem", nullable = false) // Define o nome da coluna
+    private String mensagem; // Declara o atributo mensagem
 
-    @NotNull(message = "O título não pode ser nulo.") // Valida que o título não seja nulo
-    private String titulo; // Título do tópico
+    // Getters e setters
 
-    @NotNull(message = "A mensagem não pode ser nula.") // Valida que a mensagem não seja nula
-    private String mensagem; // Mensagem do tópico
+    public Long getId() {
+        return id;
+    }
 
-    @NotNull(message = "A descrição não pode ser nula.") // Valida que a descrição não seja nula
-    private String descricao; // Descrição do tópico
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    // Não é mais necessário escrever os getters e setters, pois Lombok já gerou automaticamente
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
 }

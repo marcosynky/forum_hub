@@ -25,7 +25,7 @@ public class SecurityConfigurations {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .requestMatchers("/auth/login", "/auth/register").permitAll()  // Libera login e registro sem autenticação
+                .requestMatchers("/auth/login", "/auth/register", "/topics/create").permitAll()  // Libera login e registro sem autenticação
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
